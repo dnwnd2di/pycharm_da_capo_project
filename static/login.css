@@ -30,9 +30,9 @@ p{
     font-size: 35px;
     width: 1em;
     display: block;
+    left: 40%;
     margin:auto;
     color: deepskyblue;
-    left: 90%;
 }
 .checkbox{
     left:40%;
@@ -60,10 +60,6 @@ p{
     font-weight: bold;
     height:auto;
     text-align:center;
-}
+    }
 .container{
-    border-radius: 15px;
-    }
-.form-control{
-    border-radius: 15px;
-    }
+    background: white;}
