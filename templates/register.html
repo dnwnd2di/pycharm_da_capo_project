@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %} Example for registration with handling databse {% endblock %}
+
+{% block optional_javascript %}
+    <script src="{{ url_for('static', filename='register.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<span style="line-height: 50px;"><br></span>
+
+
+<div id="box">
+
+
+    <form action="cgi-bin/formsample.cgi" method="post" >
+        <span class="glyphicon glyphicon-user" style=""></span>
+        <hr class="soften" />
+        <p style="text-align: left; font-weight: bold">&nbsp;&nbsp;학 번 :
+            <br><input type="text" name="userid" id="userid" required  placeholder="Enter ID" style="width:500px"> </p>
+        <p style="text-align: left; font-weight: bold">&nbsp;&nbsp;Name :
+            <br>&nbsp;<input type="text" name="username" id="username" required  placeholder="Enter name" style="width:500px"> </p>
+        <p style="text-align: left; font-weight: bold">&nbsp;&nbsp;Passwd :
+            <br><input type="password" name="userpassword" id="userpassword" required  placeholder="Enter Password" style="width:500px"> </p>
+        <p style="text-align: left; font-weight: bold">&nbsp;&nbsp;Passwd :
+            <br><input type="password" name="userpassword" id="userpassword" required  placeholder="Enter Password one more" style="width:500px"> </p>
+        <p style="text-align: left; font-weight: bold">&nbsp;&nbsp;E-mail :
+            <br><input type="text" name="useremail" id="useremail" placeholder="Enter Email" required style="width:500px"></p>
+    </form>
+</div>
+
+
+<span style="line-height: 110px;"><br></span>
+<div class="container" align="center">
+    <button type="button" class="btn btn-danger"><a href="2_Joinpage.html" style="color:white">회원가입</a></button>
+</div>
+
+
+
+<span style="line-height: 10px;"><br></span>
+    {% endblock %}
