@@ -1,9 +1,18 @@
-.link3{
-    color:red;
+#icon_color{
+    color:orange;
+}
+#link3{
+    color:white;
 }
 .navbar{
     background: #e6eaaa;
     font-size: auto;
-    fonts: white;
-    }
+}
+.jumbotron{
+    padding:15px;
+    color: grey;
+    background: #ffffff;
+    margin-bottom: 5px;
+    margin-top: 600px;
+}
 
