@@ -1,11 +1,9 @@
-#link3{
-    color: red;
+.link3{
+    color:red;
 }
 .navbar{
     background: #e6eaaa;
     font-size: auto;
-    font: white;
+    fonts: white;
     }
-.navbar navbar-default{
-color: white;
-}
+
