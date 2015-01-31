@@ -71,14 +71,21 @@ def login_check():
         id = request.form['id']
         password = request.form['password']
 
-        user = query_db('''select * from User where studentId = %s''', [id], one=True)
+        user = query_db('''select * from User where StudentID = %s''', [id], one=True)
         print user
         if password == user['UserPassword']:
-            session['user_id'] = user['studentId']
-            return "OK"
+            session['user_id'] = user['StudentID']
+            return redirect(url_for('information'))
         else:
             error = 'Invalid password'
-            return  render_template('login.html', error=error)
+            return render_template('login.html', error=error)
+
+
+@app.route('/information')
+def information():
+    return render_template('information.html')
+
+
 
 
     # user = query_db('''select * from user where email = %s''', [request.form['email']], one=True)
