@@ -18,10 +18,10 @@
     position: relative;
     font-size: 18px;
     font-weight: bold;
-    height:auto;
     text-align:center;
 }
-.form-control{
-    width:500px;
-    border:1px solid deepskyblue;
+.col-md-6{
+    background: #f4f4f4;
+    border-radius: 20px;
+    border: 1px solid deepskyblue;
 }

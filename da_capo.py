@@ -11,8 +11,8 @@ app.config.from_envvar('FLASK EXAMPLE_SETTINGS', silent=True)
 mysql = MySQL()
 app = Flask(__name__)
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'dlguswn12'
-app.config['MYSQL_DATABASE_DB'] = 'da_capo'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'alsu12345'
+#app.config['MYSQL_DATABASE_DB'] = 'da_capo'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
@@ -56,11 +56,6 @@ def before_request():
     g.db = db_connect.cursor()
     print type(g.db)
 
-
-@app.route('/')
-def base_test():
-    return render_template('base.html')
-
 @app.route('/login')
 def login():
     return render_template('login.html')
@@ -95,6 +90,23 @@ def login_check():
 
     return id + " "  + password
 
+@app.route('/register')
+def register():
+    return render_template('register.html')
+
+@app.route('/registerUser', methods=["POST"])
+def insert_new_user():
+    if request.method == "POST":
+        id = request.form['id']
+        name = request.form['username']
+        password = generate_password_hash(request.form['password'])
+        print(password)
+        email = request.form['email']
+        g.db.execute('''insert into user (id, name, password, email) values (%s, %s, %s, %s)''', [id, name, password,email])
+
+@app.route('/confirm_register')
+def next_register():
+    return render_template('confirm_register.html')
 
 if __name__ == "__main__":
     app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'

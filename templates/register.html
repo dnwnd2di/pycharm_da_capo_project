@@ -4,38 +4,42 @@
 {% block title %} Example for registration with handling databse {% endblock %}
 
 {% block optional_javascript %}
+    <script src="{{ url_for('static', filename='register.js') }}"></script>
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="col-md-3"></div>
-    <div class="col-md-6" style="background-color: #f4f4f4;; border-radius: 20px;">
-        <div class="form-group" >
-            <span class="glyphicon glyphicon-user"></span>
-            <hr class="soften" />
-            <label for="StudentID">학번:</label>
-            <input type="text" class="form-control" id="StudentID" placeholder="학번을 입력해주세요">
-            <br>
-            <label for="name">이름:</label>
-            <input type="text" class="form-control" id="name" placeholder="이름을 입력해주세요">
-            <br>
-            <label for="passwd">비밀번호:</label>
-            <input type="password" class="form-control" id="passwd" placeholder="비밀번호를 입력해주세요">
-            <br>
-            <label for="repwd">비밀번호 재입력:</label>
-            <input type="password" class="form-control" id="repwd" placeholder="비밀번호를 다시 입력해주세요">
-            <br>
-            <label for="email">이메일:</label>
-            <input type="email" class="form-control" id="email" placeholder="이메일을 입력해주세요">
+<form role="form" id="register_form" name="register_info" method="post" action="registerUser">
+    <div class="container">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <br>
+                <span class="glyphicon glyphicon-user"></span>
+                <hr class="soften" />
+                <label for="StudentID">학번:</label>
+                <input type="text" class="form-control" id="StudentID" name="id" placeholder="학번을 입력해주세요">
+                <span style="line-height: 5px;"><br></span>
+                <label for="name">이름:</label>
+                <input type="text" class="form-control" id="name" name="username" placeholder="이름을 입력해주세요">
+                <span style="line-height: 5px;"><br></span>
+                <label for="passwd">비밀번호:</label>
+                <input type="password" class="form-control" id="passwd" name="password" placeholder="비밀번호를 입력해주세요">
+                <span style="line-height: 5px;"><br></span>
+                <label for="repwd">비밀번호 재입력:</label>
+                <input type="password" class="form-control" id="repwd" name="password2" placeholder="비밀번호를 다시 입력해주세요">
+                <span style="line-height: 5px;"><br></span>
+                <label for="email">이메일:</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력해주세요">
+            </div>
         </div>
+        <div class="col-md-2"></div>
     </div>
-    <div class="col-md-2"></div>
-</div>
 
 
-<span style="line-height: 50px;"><br></span>
-<div class="container" align="center">
-    <button type="submit" class="btn btn-danger" id="register_submit"><a style="color:white; width:10%;">회원가입</a></button>
-</div>
-
+    <span style="line-height: 30px;"><br></span>
+    <div class="container" align="center">
+        <button class="btn btn-danger" type="submit" id="register_submit" style="color:white;">가입하기</button>
+    </div>
+    <span style="line-height: 50px;"><br></span>
+</form>
 {% endblock %}
