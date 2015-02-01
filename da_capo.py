@@ -85,6 +85,9 @@ def login_check():
 def information():
     return render_template('information.html')
 
+@app.route('/timetable_504')
+def timetable():
+    return render_template('timetable_504.html')
 
 
 
