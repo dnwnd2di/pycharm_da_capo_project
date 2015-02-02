@@ -124,6 +124,20 @@ def timetable_504():
 def timetable_519():
     return render_template('timetable_519.html')
 
+@app.route('/checkinformation')
+def checkinformation():
+    return render_template('checkinformation.html')
+
+
+
+
+
+
+
+
+
+
+
 if __name__ == "__main__":
     app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
     app.run(debug=True)
