@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='timetable.css')}}">
-{% extends "base.html" %}
+{% extends "base_timetable.html" %}
 
 {% block title %} login {% endblock %}
 
@@ -12,26 +12,23 @@
 
             });
         });
-    </script>
+</script>
 <style type="text/css">
-
+    td{
+        text-align: center;
+    }
 </style>
+
 {% endblock %}
 
 {% block content %}
-
-<div id="container">
+<div class="container">
     <div class="col-md-1"></div>
     <div class="col-md-12">
-        <table class ="table table-bordered" >
+        <table class ="table table-bordered">
             <thead>
             <tr>
-                <th>
-                    <div class="list-group">
-                        <a href="#" class="list-group-item active">504호 시간표</a>
-                        <a href="timetable_519" class="list-group-item">519호 시간표</a>
-                    </div>
-                </th>
+                <th>504호</th>
                 <th>Mon</th>
                 <th>Tue</th>
                 <th>Wed</th>
@@ -61,7 +58,7 @@
 </div>
 
 <div class="container" align="center">
-    <button type="button" class="btn btn-danger" ><a href="" style="color: white;">예약완료</a></button>
+    <button type="button" class="btn btn-danger" ><a href="9_Finish.html" style="color: white;">예약완료</a></button>
 </div>
 
 {% endblock %}

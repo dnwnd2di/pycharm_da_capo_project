@@ -124,10 +124,17 @@ def timetable_504():
 def timetable_519():
     return render_template('timetable_519.html')
 
+@app.route('/master_reservation')
+def master_reservation():
+    return render_template('master_reservation.html')
+
 @app.route('/checkinformation')
 def checkinformation():
     return render_template('checkinformation.html')
 
+@app.route('/selectlist')
+def selectlist():
+    return render_template('selectlist.html')
 
 
 
