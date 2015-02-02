@@ -15,7 +15,8 @@
 {% block content %}
 <form class="form-signin" method="post" action="check_login">
     <span style="line-height: 80px"><br></span>
-    <div class="container" style="background: #f4f4f4; width: 550px;">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
         <span style="line-height: 50px"><br></span>
         <div id="main">
             <span class="glyphicon glyphicon-user" ></span>
@@ -37,18 +38,16 @@
                 </div>
             </div>
         </div>
-
         {% if error %}
             <strong>{{ error }}</strong>
         {% endif %}
-
     </div>
+    <div class="col-md-3"></div>
 
-
-    <div class="row">
-        <span style="line-height: 60px"><br></span>
+    <div class="row" align="center">
         <div class="col-md-2"></div>
-        <div class="col-md-8" align="center" >
+        <div class="col-md-12">
+            <span style="line-height: 50px"><br></span>
             <button type="button" class="btn btn-danger" value="비밀번호찾기" href="#" data-toggle="modal" data-target="#basicModal" style="color: white;">비밀번호 찾기</button>
             <div id="stack2" class="modal hide fade" tabindex="-1" data-focus-on="input:first">
                 <div class="modal-header">
