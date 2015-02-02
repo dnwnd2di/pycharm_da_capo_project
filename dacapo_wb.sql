@@ -46,7 +46,7 @@ CREATE TABLE `Students` (
 CREATE TABLE `User` (
   `StudentID` int(11) NOT NULL,
   `UserName` varchar(45) NOT NULL,
-  `UserPassword` varchar(45) NOT NULL,
+  `UserPassword` varchar(255) NOT NULL,
   `UserEmail` varchar(45) NOT NULL,
   PRIMARY KEY (`StudentID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
