@@ -11,8 +11,8 @@ app.config.from_envvar('FLASK EXAMPLE_SETTINGS', silent=True)
 mysql = MySQL()
 app = Flask(__name__)
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'alsu12345'
-#app.config['MYSQL_DATABASE_DB'] = 'da_capo'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'dlguswn12'
+app.config['MYSQL_DATABASE_DB'] = 'da_capo'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
@@ -68,7 +68,10 @@ def login_check():
 
         user = query_db('''select * from User where StudentID = %s''', [id], one=True)
         print user
-        if password == user['UserPassword']:
+        print generate_password_hash(password)
+        print user['UserPassword']
+        if check_password_hash(user['UserPassword'], request.form['password']):
+
             session['user_id'] = user['StudentID']
             return redirect(url_for('information'))
         else:
@@ -101,10 +104,9 @@ def insert_new_user():
         id = request.form['id']
         name = request.form['username']
         password = generate_password_hash(request.form['password'])
-        print(password)
         email = request.form['email']
         g.db.execute('''insert into User (StudentID, UserName, UserPassword, UserEmail) values (%s, %s, %s, %s)''', [id, name, password,email])
-        return redirect(url_for('confirm_register'))
+        return redirect(url_for('next_register'))
 
 @app.route('/confirm_register')
 def next_register():
@@ -115,10 +117,12 @@ def information():
     return render_template('information.html')
 
 @app.route('/timetable_504')
-def timetable():
+def timetable_504():
     return render_template('timetable_504.html')
 
-
+@app.route('/timetable_519')
+def timetable_519():
+    return render_template('timetable_519.html')
 
 if __name__ == "__main__":
     app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
