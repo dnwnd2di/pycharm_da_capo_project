@@ -1,13 +1,6 @@
-.btn{
-            background-color: #ff8868;
-            width:15%;
-            font-size: 18px;
-            font-weight: bold;
-            height:auto;
-            text-align:center;
+        .navbar {
+            background-color: #e6eaaa;
         }
-        li{
-            display: inline;
         #container{
             margin: auto;
             width: 85%;
@@ -24,37 +17,45 @@
             -ms-flex-direction: row-reverse;
             -webkit-flex-direction: row-reverse;
             flex-direction: row-reverse;
-            text-align: center;
         }
         #room{
             list-style-type: none;
             margin: 0;
             padding: 0;
+            display: left;
             font-size: 18px;
         }
-        .table{
+        table{
             font-size : 18px;
             border-collapse: collapse;
         }
-        .table,.table th,.table td{
+        table,th,td{
             border: 1px solid lavenderblush;
             padding: 10px;
             text-align: center;
         }
         .table th{
-            background-color : red;
+            background-color : #f8ffff;
             font-weight: bold;
-
+            text-align:center;
         }
-        .colgroup{
-            width:10%;
+        colgroup{
+            width:20%;
             background-color : #f8ffff;
             font-weight: bold;
         }
-        .p{
+        p{
             text-align: center;
-        }
-        .divider{
+        }        .divider{
             padding:15px;
             background-color: #FFFFFF;
+        }
+
+        .btn{
+            background-color: #ff8868;
+            width:15%;
+            font-size: 18px;
+            font-weight: bold;
+            height:auto;
+            text-align:center;
         }
