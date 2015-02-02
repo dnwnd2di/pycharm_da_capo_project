@@ -117,10 +117,12 @@ def information():
     return render_template('information.html')
 
 @app.route('/timetable_504')
-def timetable():
+def timetable_504():
     return render_template('timetable_504.html')
 
-
+@app.route('/timetable_519')
+def timetable_519():
+    return render_template('timetable_519.html')
 
 if __name__ == "__main__":
     app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
