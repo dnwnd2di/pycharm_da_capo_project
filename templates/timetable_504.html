@@ -25,7 +25,7 @@
 <div class="container">
     <div class="col-md-1"></div>
     <div class="col-md-12">
-        <table class ="table table-bordered">
+        <table class ="table table-bordered" id="timetable">
             <thead>
             <tr>
                 <th>504호</th>
@@ -58,7 +58,7 @@
 </div>
 
 <div class="container" align="center">
-    <button type="button" class="btn btn-danger" ><a href="9_Finish.html" style="color: white;">예약완료</a></button>
+    <button type="button" class="btn btn-danger" ><a href="{{url_for('finish_reservation')}}" style="color: white;">예약완료</a></button>
 </div>
 
 {% endblock %}

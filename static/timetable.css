@@ -34,7 +34,7 @@
             padding: 10px;
             text-align: center;
         }
-        .table th{
+        #timetable th{
             background-color : #f8ffff;
             font-weight: bold;
             text-align:center;

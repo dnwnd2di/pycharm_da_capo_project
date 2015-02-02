@@ -11,7 +11,7 @@ app.config.from_envvar('FLASK EXAMPLE_SETTINGS', silent=True)
 mysql = MySQL()
 app = Flask(__name__)
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'dlguswn12'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'alsu12345'
 app.config['MYSQL_DATABASE_DB'] = 'da_capo'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
@@ -136,14 +136,13 @@ def checkinformation():
 def selectlist():
     return render_template('selectlist.html')
 
+@app.route('/finish')
+def finish_reservation():
+    return render_template('finish_reservation.html')
 
-
-
-
-
-
-
-
+@app.route('/student_member')
+def student_member():
+    return render_template('student_member.html')
 
 if __name__ == "__main__":
     app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'

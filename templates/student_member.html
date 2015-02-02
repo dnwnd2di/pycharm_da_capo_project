@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %} login {% endblock %}
+
+{% block optional_javascript %}
+<script>
+        x = 0;
+        $(document).ready(function(){
+            $("div").scroll(function(){
+                $("span").text( x+= 1);
+            });
+        });
+</script>
+{% endblock %}
+
+
+{% block content %}
+
+<span style="line-height:50px"><br></span>
+
+
+<div id="main" align="center">
+    <p style="color:red;font-weight:bold;">* 세부사항을 입력해 주세요 *</p>
+    <br>
+    <form action="cgi-bin/formsample.cgi" method="post" style="font-size: medium">
+        <table id="table">
+            <tr>
+                <th>예약자 학번</th>
+                <td>201433298 </td>
+            </tr>
+            <tr>
+                <th>예약자 이름</th>
+                <td>이 현 주</td>
+            </tr>
+            <tr>
+                <th>예약 시간</th>
+                <td>13 : 00 ~ 15 : 00</td>
+            </tr>
+            <tr style="margin:30px;"><th>동반사용자</th><td><TEXTAREA NAME="Address" ROWS=2 COLS=50></TEXTAREA></td></tr>
+            <tr style="margin:30px;"><th>사용 목적</th>
+                <td><p><select>
+                    <option value="study">스터디</option>
+                    <option value="project">조별과제</option>
+                    <option value="conference">과 회의</option>
+                    <option value="other">기타</option>
+                </select>
+                    <br>
+                    <TEXTAREA NAME="Reason" placeholder="기타 사유를 입력하세요" ROWS=3 COLS=50></TEXTAREA></td></tr>
+        </table>
+    </form>
+</div>
+
+<div class="container" align="center">
+    <button type="button" class="btn btn-danger"><a href="{{url_for('finish_reservation')}}" style="color: white;">예약완료</a></button>
+</div>
+
+
+{% endblock %}
