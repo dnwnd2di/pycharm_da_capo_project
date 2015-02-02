@@ -106,7 +106,7 @@ def insert_new_user():
         password = generate_password_hash(request.form['password'])
         email = request.form['email']
         g.db.execute('''insert into User (StudentID, UserName, UserPassword, UserEmail) values (%s, %s, %s, %s)''', [id, name, password,email])
-        return redirect(url_for('confirm_register'))
+        return redirect(url_for('next_register'))
 
 @app.route('/confirm_register')
 def next_register():
