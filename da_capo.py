@@ -11,7 +11,8 @@ app.config.from_envvar('FLASK EXAMPLE_SETTINGS', silent=True)
 mysql = MySQL()
 app = Flask(__name__)
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'alsu12345'
+#app.config['MYSQL_DATABASE_PASSWORD'] = 'alsu12345'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'dlguswn12'
 app.config['MYSQL_DATABASE_DB'] = 'da_capo'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
@@ -56,8 +57,24 @@ def before_request():
     g.db = db_connect.cursor()
     print type(g.db)
 
+    g.user = None
+    if 'user_id' in session:
+        g.user = query_db('select * from User where StudentID = %s',
+                          [session['user_id']], one=True)
+
 @app.route('/login')
 def login():
+    if g.user:
+        return redirect(url_for('information'))
+
+    return render_template('login.html')
+
+
+@app.route('/logout_process')
+def logut_process():
+    if g.user:
+        session.pop('user_id', None)
+
     return render_template('login.html')
 
 @app.route('/check_login',  methods=["POST"])
@@ -67,11 +84,15 @@ def login_check():
         password = request.form['password']
 
         user = query_db('''select * from User where StudentID = %s''', [id], one=True)
+
+        if user == None:
+            error = 'Invalid UserName'
+            return render_template('login.html', error=error)
+
         print user
         print generate_password_hash(password)
         print user['UserPassword']
         if check_password_hash(user['UserPassword'], request.form['password']):
-
             session['user_id'] = user['StudentID']
             return redirect(url_for('information'))
         else:
@@ -118,6 +139,8 @@ def information():
 
 @app.route('/timetable_504')
 def timetable_504():
+    if not g.user:
+        return redirect(url_for('login'))
     return render_template('timetable_504.html')
 
 @app.route('/timetable_519')
