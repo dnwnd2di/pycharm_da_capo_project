@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import Flask, render_template, request, make_response, url_for, session, g, redirect
 from flask.ext.mysql import MySQL
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -11,8 +12,8 @@ app.config.from_envvar('FLASK EXAMPLE_SETTINGS', silent=True)
 mysql = MySQL()
 app = Flask(__name__)
 app.config['MYSQL_DATABASE_USER'] = 'root'
-#app.config['MYSQL_DATABASE_PASSWORD'] = 'alsu12345'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'dlguswn12'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'alsu12345'
+#app.config['MYSQL_DATABASE_PASSWORD'] = 'dlguswn12'
 app.config['MYSQL_DATABASE_DB'] = 'da_capo'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
@@ -88,10 +89,6 @@ def login_check():
         if user == None:
             error = 'Invalid UserName'
             return render_template('login.html', error=error)
-
-        print user
-        print generate_password_hash(password)
-        print user['UserPassword']
         if check_password_hash(user['UserPassword'], request.form['password']):
             session['user_id'] = user['StudentID']
             return redirect(url_for('information'))
@@ -127,7 +124,20 @@ def insert_new_user():
         password = generate_password_hash(request.form['password'])
         email = request.form['email']
         g.db.execute('''insert into User (StudentID, UserName, UserPassword, UserEmail) values (%s, %s, %s, %s)''', [id, name, password,email])
-        return redirect(url_for('next_register'))
+        if not request.form['username']:
+            error = '이름을 입력하여주세요'
+            return render_template('register.html', error=error)
+        elif not request.form['email']:
+            error = '이메일을 입력하여주세요'
+            return render_template('register.html', error=error)
+        elif not request.form['password']:
+            error = '비밀번호를 입력하여주세요'
+            return render_template('register.html', error=error)
+        elif request.form['password'] != request.form['password2']:
+            error = '비밀번호를 정확하게 입력하였는지 확인해주세요'
+            return render_template('register.html', error=error)
+        else:
+            return redirect(url_for('next_register'))
 
 @app.route('/confirm_register')
 def next_register():
