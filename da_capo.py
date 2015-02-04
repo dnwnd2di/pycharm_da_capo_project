@@ -12,8 +12,8 @@ app.config.from_envvar('FLASK EXAMPLE_SETTINGS', silent=True)
 mysql = MySQL()
 app = Flask(__name__)
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'alsu12345'
-#app.config['MYSQL_DATABASE_PASSWORD'] = 'dlguswn12'
+#app.config['MYSQL_DATABASE_PASSWORD'] = 'alsu12345'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'dlguswn12'
 app.config['MYSQL_DATABASE_DB'] = 'da_capo'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
@@ -41,10 +41,7 @@ def init_db():
 def query_db(query, args=(), one=False):
     """Queries the database and returns a list of dictionaries."""
     g.db.execute(query, args)
-    print (g.db)
-
     data = g.db.fetchall()
-    print data
     rv = [dict((g.db.description[idx][0], value)
                for idx, value in enumerate(row)) for row in data]
     return (rv[0] if rv else None) if one else rv
@@ -123,20 +120,28 @@ def insert_new_user():
         name = request.form['username']
         password = generate_password_hash(request.form['password'])
         email = request.form['email']
-        g.db.execute('''insert into User (StudentID, UserName, UserPassword, UserEmail) values (%s, %s, %s, %s)''', [id, name, password,email])
-        if not request.form['username']:
-            error = '이름을 입력하여주세요'
+        student = query_db('''select * from Students where StudentID = %s ''', [id], one=True)
+
+        if not request.form['id']:
+            error = 'please input id'
+            return render_template('register.html', error=error)
+        elif not request.form['username']:
+            error = 'please input name'
             return render_template('register.html', error=error)
         elif not request.form['email']:
-            error = '이메일을 입력하여주세요'
+            error = 'please input email'
             return render_template('register.html', error=error)
         elif not request.form['password']:
-            error = '비밀번호를 입력하여주세요'
+            error = 'please input password'
             return render_template('register.html', error=error)
         elif request.form['password'] != request.form['password2']:
-            error = '비밀번호를 정확하게 입력하였는지 확인해주세요'
+            error = 'please check that you have entered it correctly'
+            return render_template('register.html', error=error)
+        elif student['StudentName'] != request.form['username']:
+            error = 'Invalid your studentID and Name'
             return render_template('register.html', error=error)
         else:
+            g.db.execute('''insert into User (StudentID, UserName, UserPassword, UserEmail) values (%s, %s, %s, %s)''', [id, name, password,email])
             return redirect(url_for('next_register'))
 
 @app.route('/confirm_register')
