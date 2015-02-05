@@ -13,31 +13,31 @@
 <table class="reservation-table" align="center">
     <tr>
         <th>강의실</th>
-        <td>519호</td>
+        <td>{{ room }}</td>
     </tr>
     <tr>
         <th>예약자학번</th>
-        <td>201433298</td>
+        <td>{{g.user['StudentID']}}</td>
     </tr>
     <tr>
         <th>예약자이름</th>
-        <td>이현주</td>
+        <td>{{g.user['UserName']}}</td>
     </tr>
     <tr>
         <th>동반사용자</th>
-        <td>201433272 서예지<br>201433289 홍길동</td>
+        <td>{{member}}</td>
     </tr>
     <tr>
         <th>예약시간</th>
-        <td>13:00~15:00</td>
+        <td>{{start}}~{{end}}</td>
     </tr>
     <tr>
         <th>사용목적</th>
-        <td>프로그램 입문 수업 발표 회의</td>
+        <td>{{object}}</td>
     </tr>
     <tr>
         <th>사용승인</th>
-        <td>대기</td>
+        <td>{{status}}</td>
     </tr>
 </table>
 <span style="line-height: 40px"><br></span>

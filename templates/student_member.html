@@ -1,17 +1,69 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='student_member.css')}}">
 {% extends "base.html" %}
 
 {% block title %} login {% endblock %}
 
 {% block optional_javascript %}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='student_member.css')}}">
+
+<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 <script>
         x = 0;
-        $(document).ready(function(){
+        $(document).ready(function()
+        {
             $("div").scroll(function(){
                 $("span").text( x+= 1);
             });
-        });
+
+            $("#TEXTAREA").autocomplete({
+                source: function (request, response)
+                {
+                    $.ajax(
+                    {
+                        url:'/input_member',
+                        dataType: "json",
+                        data:
+                        {
+                            term: request.term,
+                        },
+                        success: function (data)
+                        {
+                            response($.map(data, function(item) {
+                                return {
+                                    label: item['StudentID'] + " " + item['StudentName'],
+                                    studentID: item['StudentID'],
+                                    studentName: item['StudentName']
+                                };
+                            }));
+                        }
+                    });
+                },
+                minLength: 3,
+                select: function (event, ui)
+                {
+                    log( ui.item ?
+                    "Selected: " + ui.item.label :
+                    "Nothing selected, input was " + this.value);
+                },
+                open: function() {
+                    $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+                },
+                close: function() {
+                    $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+      }
+             });
+         });
 </script>
+<script>
+$(document).ready(function(){
+    $("#btn1").click(function(){
+        $("appendT").append("<p>{{TEXTAREA}}</p>");
+    });
+});
+</script>
+</script>
+
+<script src="{{ url_for('static', filename='member.js') }}"></script>
 {% endblock %}
 
 
@@ -25,11 +77,12 @@
     <p style="color:red;font-weight:bold;
  font-size:20px;">* 세부사항을 입력해 주세요 *</p>
     <br>
+
     <form action="cgi-bin/formsample.cgi" method="post" style="font-size: medium">
         <table id="table-member">
             <tr>
                 <th>예약자 학번</th>
-                <td>201433298 </td>
+                <td>201433298</td>
             </tr>
             <tr>
                 <th>예약자 이름</th>
@@ -39,22 +92,32 @@
                 <th>예약 시간</th>
                 <td>13 : 00 ~ 15 : 00</td>
             </tr>
-            <tr style="margin:30px;"><th style="height:100px;">동반사용자</th><td><TEXTAREA NAME="Address" ROWS=2 COLS=50></TEXTAREA></td></tr>
-            <tr style="margin:30px;"><th>사용 목적</th>
-                <td><p><select>
-                    <option value="study">스터디</option>
-                    <option value="project">조별과제</option>
-                    <option value="conference">과 회의</option>
-                    <option value="other">기타</option>
-                </select>
-                    <br>
-                    <TEXTAREA NAME="Reason" placeholder="기타 사유를 입력하세요" ROWS=3 COLS=50></TEXTAREA></td></tr>
+
+            <tr style="margin:30px;">
+                <th style="height:100px;"><label for="TEXTAREA"> member : </label></th>
+                <td><TEXTAREA NAME="TEXTAREA" id="TEXTAREA" ROWS=1 COLS=50 ></TEXTAREA></td>
+            </tr>
+
+            <tr style="margin:30px;">
+                <th>사용 목적</th>
+                <td>
+                    <p><select>
+                        <option value="study">스터디</option>
+                        <option value="project">조별과제</option>
+                        <option value="conference">과 회의</option>
+                        <option value="other">기타</option>
+                    </select>
+                        <br>
+                        <TEXTAREA NAME="Reason" placeholder="기타 사유를 입력하세요" ROWS=3 COLS=50></TEXTAREA>
+                </td>
+            </tr>
         </table>
     </form>
 </div>
 
 <div class="container" align="center">
-    <button type="button" class="btn btn-danger"><a href="{{url_for('finish_reservation')}}" style="color: white;">예약완료</a></button>
+    <button type="button" class="btn btn-danger" onClick="frmCheck();"><a href="{{url_for('finish_reservation')}}"
+                                                    style="color: white;">예약완료</a></button>
 </div>
 
 
