@@ -54,15 +54,15 @@ h2,p{
 <table align="center">
     <tr>
         <th>강의실</th>
-        <td>519호</td>
+        <td>{{ room }}</td>
     </tr>
     <tr>
         <th>예약자학번</th>
-        <td>201433298</td>
+        <td>{{g.user['StudentID']}}</td>
     </tr>
     <tr>
         <th>예약자이름</th>
-        <td>이현주</td>
+        <td>{{g.user['UserName']}}</td>
     </tr>
     <tr>
         <th>동반사용자</th>

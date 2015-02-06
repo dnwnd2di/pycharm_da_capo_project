@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, render_template, request, make_response, url_for, session, g, redirect
+from flask import Flask, render_template, request, make_response, url_for, session, g, redirect, Response
 from flask.ext.mysql import MySQL
 from werkzeug.security import check_password_hash, generate_password_hash
 import json
@@ -41,6 +41,7 @@ def init_db():
 def query_db(query, args=(), one=False):
     """Queries the database and returns a list of dictionaries."""
     g.db.execute(query, args)
+
     data = g.db.fetchall()
     rv = [dict((g.db.description[idx][0], value)
                for idx, value in enumerate(row)) for row in data]
@@ -57,7 +58,7 @@ def before_request():
 
     g.user = None
     if 'user_id' in session:
-        g.user = query_db('select * from User where StudentID = %s',
+        g.user = query_db('select StudentID ,UserName, UserEmail from User where StudentID = %s',
                           [session['user_id']], one=True)
 
 @app.route('/login')
@@ -69,7 +70,7 @@ def login():
 
 
 @app.route('/logout_process')
-def logut_process():
+def logout_process():
     if g.user:
         session.pop('user_id', None)
 
@@ -156,32 +157,127 @@ def information():
 def timetable_504():
     if not g.user:
         return redirect(url_for('login'))
-    return render_template('timetable_504.html')
+    else:
+        room = '504'
+        resp = make_response(render_template('timetable_504.html', room=room))
+        resp.set_cookie('room', value=room)
+        return resp
+
+        #if request.method == "POST":
+        #username = request.form['username']
+        #id = request.form['userid']
+
+        #resp = make_response(render_template('cookie.html',  username=username, userid=id))
+        #resp.set_cookie('username', value=username)
+        #resp.set_cookie('userid', value=id)
+
+        #return resp
 
 @app.route('/timetable_519')
 def timetable_519():
-    return render_template('timetable_519.html')
+    if not g.user:
+        return redirect(url_for('login'))
+    else:
+        room = '519'
+        resp = make_response(render_template('timetable_519.html', room=room))
+        resp.set_cookie('room', value=room)
+        return resp
 
 @app.route('/master_reservation')
 def master_reservation():
+    if not g.user:
+        return redirect(url_for('login'))
     return render_template('master_reservation.html')
 
 @app.route('/checkinformation')
 def checkinformation():
+    if not g.user:
+        return redirect(url_for('login'))
+    if "room" in request.cookies:
+        room = request.cookies.get("room")
     return render_template('checkinformation.html')
 
 @app.route('/selectlist')
 def selectlist():
+    if not g.user:
+        return redirect(url_for('login'))
     return render_template('selectlist.html')
 
 @app.route('/finish')
 def finish_reservation():
-    return render_template('finish_reservation.html')
+    if not g.user:
+        return redirect(url_for('login'))
+
+    id=session['user_id']
+    reservation = query_db('''select * from Reservation where StudentID = %s''', [id], one=True)
+    reservationmember = query_db('''select * from ReservationMember where LeaderNumber = %s''', [id], one=True)
+    start= reservation['StartTime']
+    end=reservation['EndTime']
+    object = reservation['Object']
+    member = reservationmember['MemberName']
+    room=reservation['RoomNumber']
+    status=reservation['Status']
+
+    return render_template('finish_reservation.html', room=room,object=object, member=member, start=start, end=end, status=status)
+
+
+
+        #if 'username' in request.cookies:
+            #username = request.cookies.get('username')
+            #id = request.cookies.get('userid')
+
+        #return render_template('cookie.html', username=username, userid=id)
 
 @app.route('/student_member')
 def student_member():
+    if not g.user:
+        return redirect(url_for('login'))
     return render_template('student_member.html')
+
+@app.route('/mem')
+def mem():
+    if 'room' in request.cookies:
+        room=request.cookies.get('room')
+    id=session['user_id']
+    status='YES'
+    g.db.execute('''insert into Reservation (StudentID, RoomNumber, Status) values (%s, %s, %s, %s)''', [id, room, status])
+
+    return redirect(url_for('finish_reservation'))
+
+@app.route('/member')
+def member():
+    if 'room' in request.cookies:
+        room=request.cookies.get('room')
+    id=session['user_id']
+    member=request.form['TEXTAREA']
+    object=request.form['Reason']
+    status='wait'
+    g.db.execute('''insert into Reservation (StudentID, Object, RoomNumber, Status) values (%s, %s, %s, %s)''', [id, object,room, status])
+    g.db.execute('''insert into Reservation (StudentID, MemberName) values (%s, %s)''', [id, member])
+
+    return redirect(url_for('finish_reservation'))
+
+
+@app.route('/input_member', methods=['GET'])
+def input_member():
+    data = request.args.get('term', '')
+    json_data = query_db('''select * from Students WHERE StudentID like %s ''', [data+"%"])
+
+    return Response(json.dumps(json_data),mimetype='application/json')
+
+@app.route('/check_password', methods=['GET'])
+def check_password():
+    id=request.form[modalid]
+    email=request.form[modalemail]
+
+    user = query_db('''select * from User where StudentID = %s''', [id], one=True)
+
+    if not request.form['id']:
+        error = 'please input id'
+    elif not request.form['username']:
+        error = 'please input name'
 
 if __name__ == "__main__":
     app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
     app.run(debug=True)
+
