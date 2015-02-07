@@ -12,8 +12,8 @@ app.config.from_envvar('FLASK EXAMPLE_SETTINGS', silent=True)
 mysql = MySQL()
 app = Flask(__name__)
 app.config['MYSQL_DATABASE_USER'] = 'root'
-#app.config['MYSQL_DATABASE_PASSWORD'] = 'alsu12345'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'dlguswn12'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'alsu12345'
+#app.config['MYSQL_DATABASE_PASSWORD'] = 'dlguswn12'
 app.config['MYSQL_DATABASE_DB'] = 'da_capo'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
@@ -161,19 +161,21 @@ def timetable_504():
     if not g.user:
         return redirect(url_for('login'))
     else:
-        time = ["09:00~10:00","10:00~11:00","11:00~12:00","12:00~13:00","13:00~14:00","13:00~14:00",
-            "14:00~15:00","15:00~16:00","16:00~17:00","17:00~18:00","18:00~19:00","19:00~20:00",
-            "20:00~21:00","21:00~22:00"];
+        Start_time=["09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00"
+                ,"18:00","19:00","20:00","21:00","22:00"];
+        End_time=["10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00"
+            ,"18:00","19:00","20:00","21:00","22:00","23:00"];
+
         number = 1;
-        counter = [[0 for i in range(20)]for j in range(20)];
-        for i in range(14):
-            for j in range(5):
-                counter[i][j]=number;
+        counter = [[0 for i in range(5)]for j in range(14)];
+        for i in range(5):
+            for j in range(14):
+                counter[j][i]=number;
                 number=number+1;
         # flask.jsonify(**json_data)
         data=json.dumps(json_data)
         room = '504'
-        resp = make_response(render_template('timetable_504.html', room=room,data=data, time=time, counter=counter))
+        resp = make_response(render_template('timetable_504.html', room=room,data=data,Start_time=Start_time,End_time=End_time, counter=counter))
         resp.set_cookie('room', value=room)
         return resp
 
@@ -191,9 +193,26 @@ def timetable_504():
 def timetable_519():
     if not g.user:
         return redirect(url_for('login'))
+    else: json_data = query_db('''select StudentID from Students WHERE StudentID = %s''', [session['user_id']])
+    # return json.dumps(json_data)
+    if not g.user:
+        return redirect(url_for('login'))
     else:
+        Start_time=["09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00"
+                    ,"18:00","19:00","20:00","21:00","22:00"];
+        End_time=["10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00"
+                ,"18:00","19:00","20:00","21:00","22:00","23:00"];
+
+        number = 1;
+        counter = [[0 for i in range(5)]for j in range(14)];
+        for i in range(5):
+            for j in range(14):
+                counter[j][i]=number;
+                number=number+1;
+        # flask.jsonify(**json_data)
+        data=json.dumps(json_data)
         room = '519'
-        resp = make_response(render_template('timetable_519.html', room=room))
+        resp = make_response(render_template('timetable_519.html', room=room,data=data,Start_time=Start_time,End_time=End_time, counter=counter))
         resp.set_cookie('room', value=room)
         return resp
 

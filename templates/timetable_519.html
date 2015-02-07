@@ -1,20 +1,12 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='timetable.css')}}">
+
 {% extends "base_timetable.html" %}
 
 {% block title %} login {% endblock %}
 
 {% block optional_javascript %}
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.table td').click(function () {
-                $('.table td').css('background-color', 'White');
-                $(this).css('background-color', 'red');
-
-            });
-        });
-</script>
 <style type="text/css">
-    td{
+    .main td,th{
         text-align: center;
     }
 </style>
@@ -22,11 +14,11 @@
 {% endblock %}
 
 {% block content %}
+
 <div class="container">
     <div class="col-md-1"></div>
     <div class="col-md-12">
-        <table class ="table table-bordered" id="timetable">
-            <thead>
+        <table class ="table table-bordered " id="main">
             <tr>
                 <th>519호</th>
                 <th>Mon</th>
@@ -35,30 +27,67 @@
                 <th>Thu</th>
                 <th>Fri</th>
             </tr>
-            </thead>
-            <tbody >
-            <colgroup span="1" class="time"></colgroup>
-            <tr><th>09:00~10:00</th><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><th>10:00~11:00</th><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><th>11:00~12:00</th><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><th>12:00~13:00</th><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><th>13:00~14:00</th><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><th>14:00~15:00</th><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><th>15:00~16:00</th><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><th>16:00~17:00</th><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><th>17:00~18:00</th><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><th>18:00~19:00</th><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><th>19:00~20:00</th><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><th>20:00~21:00</th><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><th>21:00~22:00</th><td></td><td></td><td></td><td></td><td></td></tr>
-            </tbody>
+
+            {% for i in range(14)%}
+            <tr>
+                <th>{{Start_time[i]}}~{{End_time[i]}}</th>
+                {% for j in range(5) %}
+                    <td id={{counter[i][j]}} name={{i}},{{counter[i][j]}}>{{counter[i][j]}}</td>
+                {% endfor %}
+            </tr>
+             {% endfor %}
         </table>
     </div>
     <div class="col-md-1"></div>
 </div>
 
-<div class="container" align="center">
-    <button type="button" class="btn btn-danger" ><a href="{{url_for('student_member')}}" style="color: white;">예약완료</a></button>
-</div>
 
+<script type="text/javascript">
+    {% if data %}
+         var obj = jQuery.parseJSON( '[{"StudentID": 123456789}]');
+         var number=0;
+         var collect_reservation=[];
+         table_id=obj[0].StudentID;
+         if (table_id == '123456789'){
+            $( function() {
+                    $('td').click( function() {
+                        var change=$(this).attr('name');
+                        if (number<2){
+                            if($(this).attr('style')){
+                                collect_reservation.pop();
+                                number=number-1;
+                                $(this).removeAttr('style');
+                            }
+                            else{
+                                $(this).css('background', 'red')
+                                number=number+1;
+                                collect_reservation.push(change);
+                            }
+                        }
+                        else{
+                            if($(this).attr('style')){
+                                collect_reservation.pop();
+                                number=number-1;
+                                $(this).removeAttr('style');
+                            }
+                            else{
+                                $('td').removeAttr('style');
+                                number=0;
+                                collect_reservation=[];
+                            }
+                        }
+                    });
+            });
+         }
+    {% endif %}
+</script>
+
+<div class="container" align="center">
+    <button type="button" class="btn btn-danger"><a onclick="WriteCookie();">예약완료</a></button>
+    <script>
+        function WriteCookie(){
+         alert(collect_reservation);
+        }
+    </script>
+</div>
 {% endblock %}

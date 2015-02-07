@@ -1,6 +1,4 @@
-        .navbar {
-            background-color: #e6eaaa;
-        }
+
         #container{
             margin: auto;
             width: 85%;
@@ -34,15 +32,10 @@
             padding: 10px;
             text-align: center;
         }
-        #timetable th{
+        #main th{
             background-color : #f8ffff;
             font-weight: bold;
             text-align:center;
-        }
-        colgroup{
-            width:20%;
-            background-color : #f8ffff;
-            font-weight: bold;
         }
         p{
             text-align: center;
