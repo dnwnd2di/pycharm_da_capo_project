@@ -12,13 +12,13 @@ CREATE TABLE `Master` (
 CREATE TABLE `Reservation` (
   `Number` int(11) NOT NULL,
   `StudentID` int(11) NOT NULL,
-  `Date` date NOT NULL,
-  `StartTime` time NOT NULL,
-  `EndTime` time NOT NULL,
+  `Date` date  DEFAULT NULL,
+  `StartTime` time DEFAULT NULL,
+  `EndTime` time DEFAULT NULL,
   `Status` varchar(45) NOT NULL,
   `Object` varchar(45) DEFAULT NULL,
   `MasterReason` varchar(45) DEFAULT NULL,
-  `RoomNumber` int(11) NOT NULL,
+  `RoomNumber` varchar(45) NOT NULL,
   PRIMARY KEY (`Number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
