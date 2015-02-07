@@ -5,8 +5,16 @@
 {% block optional_javascript %}
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 <link rel="stylesheet" href="{{ url_for('static', filename='student_member.css')}}">
-
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+<script>
+$( document ).ready(function() {
+    $("#member_submit").click(function(){
+        $("#member_form").submit();
+        return false;
+    });
+});
+</script>
 <script>
         x = 0;
         $(document).ready(function()
@@ -41,9 +49,15 @@
                 minLength: 3,
                 select: function (event, ui)
                 {
-                    log( ui.item ?
-                    "Selected: " + ui.item.label :
-                    "Nothing selected, input was " + this.value);
+                    var data = "<option value="+ui.item.studentID+">"+ui.item.label+"</option>"
+                    $('#member_list').append(data);
+
+                    $("#btn2").click(function(){
+                        $("#member_list").find('option:selected').remove();
+
+
+
+                    });
                 },
                 open: function() {
                     $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
@@ -53,16 +67,13 @@
       }
              });
          });
+
 </script>
 <script>
-$(document).ready(function(){
-    $("#btn1").click(function(){
-        $("appendT").append("<p>{{TEXTAREA}}</p>");
+    $('#remove').click(function () {
+        $('#member_list option:selected').remove();
     });
-});
 </script>
-</script>
-
 <script src="{{ url_for('static', filename='member.js') }}"></script>
 {% endblock %}
 
@@ -75,18 +86,18 @@ $(document).ready(function(){
 <div id="main" align="center">
 
     <p style="color:red;font-weight:bold;
- font-size:20px;">* 세부사항을 입력해 주세요 *</p>
+        font-size:20px;">* 세부사항을 입력해 주세요 *</p>
     <br>
 
-    <form action="cgi-bin/formsample.cgi" method="post" style="font-size: medium">
+    <form role="form" id="member_form" name="member_info" method="post" action="member">
         <table id="table-member">
             <tr>
                 <th>예약자 학번</th>
-                <td>201433298</td>
+                <td>{{g.user['StudentID']}}</td>
             </tr>
             <tr>
                 <th>예약자 이름</th>
-                <td>이 현 주</td>
+                <td>{{g.user['UserName']}}</td>
             </tr>
             <tr>
                 <th>예약 시간</th>
@@ -97,16 +108,22 @@ $(document).ready(function(){
                 <th style="height:100px;"><label for="TEXTAREA"> member : </label></th>
                 <td><TEXTAREA NAME="TEXTAREA" id="TEXTAREA" ROWS=1 COLS=50 ></TEXTAREA></td>
             </tr>
+            <tr style="margin:30px;">
+                <th style="height:100px;"> append : </th>
+                <td>
+                    <select id="member_list" size="8" style="width:400px;"></select>
+                    <input type="button" id="btn2" value="지우기">
+                    </td>
 
             <tr style="margin:30px;">
                 <th>사용 목적</th>
                 <td>
-                    <p><select>
-                        <option value="study">스터디</option>
-                        <option value="project">조별과제</option>
-                        <option value="conference">과 회의</option>
-                        <option value="other">기타</option>
-                    </select>
+                    <p><select id="Object">
+                            <option value="study">스터디</option>
+                            <option value="project">조별과제</option>
+                            <option value="conference">과 회의</option>
+                            <option value="other">기타</option>
+                        </select>
                         <br>
                         <TEXTAREA NAME="Reason" placeholder="기타 사유를 입력하세요" ROWS=3 COLS=50></TEXTAREA>
                 </td>
@@ -116,9 +133,7 @@ $(document).ready(function(){
 </div>
 
 <div class="container" align="center">
-    <button type="button" class="btn btn-danger" onClick="frmCheck();"><a href="{{url_for('finish_reservation')}}"
-                                                    style="color: white;">예약완료</a></button>
+    <button class="btn btn-danger" type="submit" id="member_submit" style="color: white;">예약완료</button>
 </div>
-
 
 {% endblock %}

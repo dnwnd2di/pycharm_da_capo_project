@@ -12,8 +12,8 @@ app.config.from_envvar('FLASK EXAMPLE_SETTINGS', silent=True)
 mysql = MySQL()
 app = Flask(__name__)
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'alsu12345'
-#app.config['MYSQL_DATABASE_PASSWORD'] = 'dlguswn12'
+#app.config['MYSQL_DATABASE_PASSWORD'] = 'alsu12345'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'dlguswn12'
 app.config['MYSQL_DATABASE_DB'] = 'da_capo'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
@@ -61,7 +61,8 @@ def before_request():
         g.user = query_db('select StudentID ,UserName, UserEmail from User where StudentID = %s',
                           [session['user_id']], one=True)
 
-@app.route('/login')
+
+@app.route('/')
 def login():
     if g.user:
         return redirect(url_for('information'))
@@ -257,19 +258,21 @@ def mem():
 
     return redirect(url_for('finish_reservation'))
 
-@app.route('/member')
+@app.route('/member', methods=["POST"])
 def member():
-    if 'room' in request.cookies:
+    if request.method == "POST":
         room=request.cookies.get('room')
-    id=session['user_id']
-    member=request.form['TEXTAREA']
-    object=request.form['Reason']
-    status='wait'
-    g.db.execute('''insert into Reservation (StudentID, Object, RoomNumber, Status) values (%s, %s, %s, %s)''', [id, object,room, status])
-    g.db.execute('''insert into Reservation (StudentID, MemberName) values (%s, %s)''', [id, member])
+        id=session['user_id']
+        member=request.form.getlist('member_list')
+        object=request.args.get('Object')
+        #reason=request.form['Reason']
+        status='wait'
+        num='1'
+        print 'a'
+        g.db.execute('''insert into Reservation (StudentID, Object, RoomNumber, Status, Number) values (%s, %s, %s, %s, %s)''', [id, object, room, status, num])
+        #g.db.execute('''insert into ReservationMember (LeaderNumber, MemberName) values (%s, %s)''', [id, member])
 
     return redirect(url_for('finish_reservation'))
-
 
 @app.route('/input_member', methods=['GET'])
 def input_member():
