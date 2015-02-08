@@ -32,7 +32,7 @@
             <tr>
                 <th>{{Start_time[i]}}~{{End_time[i]}}</th>
                 {% for j in range(5) %}
-                    <td id={{counter[i][j]}} name={{i}},{{counter[i][j]}}>{{counter[i][j]}}</td>
+                    <td col id={{counter[i][j]}} name={{i}},{{counter[i][j]}}>{{counter[i][j]}}</td>
                 {% endfor %}
             </tr>
              {% endfor %}
@@ -46,34 +46,46 @@
     {% if data %}
          var obj = jQuery.parseJSON( '[{"StudentID": 123456789}]');
          var number=0;
+         var remember_thing=[];
          var collect_reservation=[];
          table_id=obj[0].StudentID;
          if (table_id == '123456789'){
             $( function() {
                     $('td').click( function() {
                         var change=$(this).attr('name');
+                        var remember=$(this).index();
                         if (number<2){
                             if($(this).attr('style')){
-                                collect_reservation.pop();
+                                removeItem(collect_reservation, change);
                                 number=number-1;
                                 $(this).removeAttr('style');
                             }
                             else{
-                                $(this).css('background', 'red')
+                                $(this).css('background', 'red');
+                                remember_thing.push(remember);
                                 number=number+1;
                                 collect_reservation.push(change);
                             }
                         }
                         else{
                             if($(this).attr('style')){
-                                collect_reservation.pop();
                                 number=number-1;
                                 $(this).removeAttr('style');
+                                removeItem(remember_thing, remember);
+                                function removeItem(remember_thing,remember){
+                                    for(var i in remember_thing){
+                                        if(remember_thing[i]==remember){
+                                            remember_thing.splice(i,1);
+                                        }
+                                    }
+                                }
+                                removeItem(collect_reservation, change);
                             }
                             else{
                                 $('td').removeAttr('style');
                                 number=0;
                                 collect_reservation=[];
+                                remember_thing=[];
                             }
                         }
                     });
@@ -83,10 +95,20 @@
 </script>
 
 <div class="container" align="center">
-    <button type="button" class="btn btn-danger"><a onclick="WriteCookie();">예약완료</a></button>
-    <script>
+    <button type="button" class="btn btn-danger"><a onclick="WriteCookie()">예약완료</a></button>
+    <script type="text/javascript">
         function WriteCookie(){
-         alert(collect_reservation);
+            if (remember_thing.length>=2){
+                if (remember_thing[0] != remember_thing[1]){
+                    alert("하루에 한 요일만 예약가능합니다");
+                }
+                else{
+                    {window.location="http://127.0.0.1:5000/student_member"};
+                }
+            }
+            else{
+                {window.location="http://127.0.0.1:5000/student_member"};
+            }
         }
     </script>
 </div>

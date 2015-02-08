@@ -263,6 +263,7 @@ def finish_reservation():
 
 @app.route('/student_member')
 def student_member():
+
     if not g.user:
         return redirect(url_for('login'))
     return render_template('student_member.html')
