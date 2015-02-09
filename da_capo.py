@@ -296,7 +296,7 @@ def member():
         status='wait'
         num='1'
         g.db.execute('''insert into Reservation (StudentID, Object, RoomNumber, Status, Number, Reason) values (%s, %s, %s, %s, %s, %s)''', [id, object, room, status, num, reason])
-        #g.db.execute('''insert into ReservationMember (LeaderNumber, MemberName) values (%s, %s)''', [id, member])
+        #g.db.execute('''insert into ReservationMember (LeaderNumber, MemberName) values (%s, %s)''', [id, member], one=False)
 
     return redirect(url_for('finish_reservation'))
 
