@@ -283,14 +283,21 @@ def student_member():
             ending[1]='null'
         room1 = request.args.get('room0', '')
         room2 = request.args.get('room1', '')
+        memory=''
         for i in range(2):
             if (starting[i] != 'null' and ending[i]!='null'):
-                g.db.execute('''insert into Reservation (StudentID,StartTime ,EndTime) values (%s,%s,%s)''',[id,starting[i],ending[i]])
-        reservation = query_db('''select * from Reservation where StudentID = %s''', [id], one=True)
-        start=reservation['StartTime']
+                memory=memory+starting[i]+'~'+ending[i]
+            memory=memory+'\n'
+
+        resp = make_response(render_template('student_member.html', memory=memory))
+        resp.set_cookie('memory', value=memory)
+        return resp
+        memory=request.cookies.get('memory')
+
+
 
         #end=reservation['EndTime']
-    return render_template('student_member.html',start=start)
+    return render_template('student_member.html',memory=memory      )
 
 @app.route('/mem')
 def mem():
