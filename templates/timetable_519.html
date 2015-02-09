@@ -7,7 +7,6 @@
 {% block optional_javascript %}
 <script type="text/javascript">
     {% if data %}
-
         jQuery.fn.addHidden = function (name, value) {
             return this.each(function () {
                 var input = $("<input>").attr("type", "hidden").attr("name", name).val(value);
