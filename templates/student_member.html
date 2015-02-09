@@ -89,7 +89,7 @@ $( document ).ready(function() {
         font-size:20px;">* 세부사항을 입력해 주세요 *</p>
     <br>
 
-    <form role="form" id="member_form" name="member_info" method="post" action="member">
+    <form role="form" id="member_form" name="member_info" method="get" action="member">
         <table id="table-member">
             <tr>
                 <th>예약자 학번</th>
@@ -101,7 +101,7 @@ $( document ).ready(function() {
             </tr>
             <tr>
                 <th>예약 시간</th>
-                <td>13 : 00 ~ 15 : 00</td>
+                <td>{{start}}</td>
             </tr>
 
             <tr style="margin:30px;">

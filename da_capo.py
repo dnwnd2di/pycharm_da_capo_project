@@ -265,14 +265,32 @@ def finish_reservation():
 def student_member():
     if not g.user:
         return redirect(url_for('login'))
+    else:
+        id=session['user_id']
+        Start_time=["09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00"
+                ,"18:00","19:00","20:00","21:00","22:00"];
+        End_time=["10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00"
+            ,"18:00","19:00","20:00","21:00","22:00","23:00"];
+        starting=[0 for i in range(2)]
+        ending=[0 for i in range(2)]
+        starting[0]= Start_time[int(request.args.get('time0', ''))]
+        ending[0]=End_time[int(request.args.get('time0', ''))]
+        if (request.args.get('time1', '') ):
+           starting[1]= Start_time[int(request.args.get('time1', ''))]
+           ending[1]=End_time[int(request.args.get('time1', ''))]
+        else:
+            starting[1]='null'
+            ending[1]='null'
+        room1 = request.args.get('room0', '')
+        room2 = request.args.get('room1', '')
+        for i in range(2):
+            if (starting[i] != 'null' and ending[i]!='null'):
+                g.db.execute('''insert into Reservation (StudentID,StartTime ,EndTime) values (%s,%s,%s)''',[id,starting[i],ending[i]])
+        reservation = query_db('''select * from Reservation where StudentID = %s''', [id], one=True)
+        start=reservation['StartTime']
 
-    book1 = request.args.get('book0', '')
-    book2 = request.args.get('book1', '')
-
-    print (book1)
-    print (book2)
-
-    return render_template('student_member.html')
+        #end=reservation['EndTime']
+    return render_template('student_member.html',start=start)
 
 @app.route('/mem')
 def mem():
