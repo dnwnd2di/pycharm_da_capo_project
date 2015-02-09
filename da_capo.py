@@ -263,9 +263,15 @@ def finish_reservation():
 
 @app.route('/student_member')
 def student_member():
-
     if not g.user:
         return redirect(url_for('login'))
+
+    book1 = request.args.get('book0', '')
+    book2 = request.args.get('book1', '')
+
+    print (book1)
+    print (book2)
+
     return render_template('student_member.html')
 
 @app.route('/mem')

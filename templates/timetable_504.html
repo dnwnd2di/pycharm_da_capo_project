@@ -5,45 +5,15 @@
 {% block title %} login {% endblock %}
 
 {% block optional_javascript %}
-<style type="text/css">
-    .main td,th{
-        text-align: center;
-    }
-</style>
-
-{% endblock %}
-
-{% block content %}
-
-<div class="container">
-    <div class="col-md-1"></div>
-    <div class="col-md-12">
-        <table class ="table table-bordered " id="main">
-            <tr>
-                <th>504호</th>
-                <th>Mon</th>
-                <th>Tue</th>
-                <th>Wed</th>
-                <th>Thu</th>
-                <th>Fri</th>
-            </tr>
-
-            {% for i in range(14)%}
-            <tr>
-                <th>{{Start_time[i]}}~{{End_time[i]}}</th>
-                {% for j in range(5) %}
-                    <td col id={{counter[i][j]}} name={{i}},{{counter[i][j]}}>{{counter[i][j]}}</td>
-                {% endfor %}
-            </tr>
-             {% endfor %}
-        </table>
-    </div>
-    <div class="col-md-1"></div>
-</div>
-
-
 <script type="text/javascript">
     {% if data %}
+
+        jQuery.fn.addHidden1 = function (name, value) {
+            return this.each(function () {
+                var input = $("<input>").attr("type", "hidden").attr("name", name).val(value);
+                $(this).append($(input));
+            });
+        };
          var obj = jQuery.parseJSON( '[{"StudentID": 123456789}]');
          var number=0;
          var remember_thing=[];
@@ -92,24 +62,67 @@
             });
          }
     {% endif %}
-</script>
-
-<div class="container" align="center">
-    <button type="button" class="btn btn-danger"><a onclick="WriteCookie()">예약완료</a></button>
-    <script type="text/javascript">
-        function WriteCookie(){
+    $( document ).ready(function() {
+        $('#submit_button').click( function() {
             if (remember_thing.length>=2){
                 if (remember_thing[0] != remember_thing[1]){
                     alert("하루에 한 요일만 예약가능합니다");
-                }
-                else{
-                    {window.location="http://127.0.0.1:5000/student_member"};
+                    remember_thing=[];
+                    return;
                 }
             }
-            else{
-                {window.location="http://127.0.0.1:5000/student_member"};
+            for (var i = 0; i< collect_reservation.length; i++){
+
+                $("#submit_time_table").addHidden1('book'+i, collect_reservation[i][1]);
+                #$("#submit_time_table").addHidden2('data'+i, collect_reservation[i][1]);
             }
+            $("#submit_time_table").submit();
         }
-    </script>
+        );
+    }
+ );
+</script>
+
+<style type="text/css">
+    .main td,th{
+    text-align: center;
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="col-md-1"></div>
+    <div class="col-md-12">
+        <table class ="table table-bordered " id="main">
+            <tr>
+                <th>504호</th>
+                <th>Mon</th>
+                <th>Tue</th>
+                <th>Wed</th>
+                <th>Thu</th>
+                <th>Fri</th>
+            </tr>
+
+            {% for i in range(14)%}
+            <tr>
+                <th>{{Start_time[i]}}~{{End_time[i]}}</th>
+                {% for j in range(5) %}
+                <td col id={{counter[i][j]}} name={{i}}{{counter[i][j]}}>{{counter[i][j]}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="col-md-1"></div>
 </div>
+
+
+<form action="/student_member" method="GET" id="submit_time_table">
+    <div class="container" align="center">
+        <button type="button" class="btn btn-danger" id="submit_button">예약완료</a></button>
+    </div>
+</form>
 {% endblock %}
