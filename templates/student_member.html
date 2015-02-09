@@ -8,12 +8,7 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 <script>
-$( document ).ready(function() {
-    $("#member_submit").click(function(){
-        $("#member_form").submit();
-        return false;
-    });
-});
+
 </script>
 <script>
         x = 0;
@@ -105,8 +100,8 @@ $( document ).ready(function() {
             </tr>
 
             <tr style="margin:30px;">
-                <th style="height:100px;"><label for="TEXTAREA"> member : </label></th>
-                <td><TEXTAREA NAME="TEXTAREA" id="TEXTAREA" ROWS=1 COLS=50 ></TEXTAREA></td>
+                <th style="height:100px;"><label for="reason_desc"> member : </label></th>
+                <td><TEXTAREA id="reason_desc" name="reason_desc"ROWS=1 COLS=50 ></TEXTAREA></td>
             </tr>
             <tr style="margin:30px;">
                 <th style="height:100px;"> append : </th>
@@ -118,22 +113,24 @@ $( document ).ready(function() {
             <tr style="margin:30px;">
                 <th>사용 목적</th>
                 <td>
-                    <p><select id="Object">
+                    <p>
+                        <select id="mymultiselect" name="mymultiselect">
                             <option value="study">스터디</option>
                             <option value="project">조별과제</option>
                             <option value="conference">과 회의</option>
                             <option value="other">기타</option>
                         </select>
                         <br>
-                        <TEXTAREA NAME="Reason" placeholder="기타 사유를 입력하세요" ROWS=3 COLS=50></TEXTAREA>
+                        <TEXTAREA NAME="reason" placeholder="기타 사유를 입력하세요" ROWS=3 COLS=50></TEXTAREA>
                 </td>
             </tr>
         </table>
-    </form>
-</div>
-
-<div class="container" align="center">
+        <div class="container" align="center">
     <button class="btn btn-danger" type="submit" id="member_submit" style="color: white;">예약완료</button>
 </div>
+</form>
+
+</div>
+
 
 {% endblock %}

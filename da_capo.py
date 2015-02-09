@@ -12,8 +12,8 @@ app.config.from_envvar('FLASK EXAMPLE_SETTINGS', silent=True)
 mysql = MySQL()
 app = Flask(__name__)
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'alsu12345'
-#app.config['MYSQL_DATABASE_PASSWORD'] = 'dlguswn12'
+# app.config['MYSQL_DATABASE_PASSWORD'] = 'alsu12345'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'dlguswn12'
 app.config['MYSQL_DATABASE_DB'] = 'da_capo'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
@@ -290,12 +290,12 @@ def member():
         room=request.cookies.get('room')
         id=session['user_id']
         member=request.form.getlist('member_list')
-        object=request.args.get('Object')
+        object = request.form.getlist('mymultiselect')
+        reason= request.form.getlist('reason')
         #reason=request.form['Reason']
         status='wait'
         num='1'
-        print 'a'
-        g.db.execute('''insert into Reservation (StudentID, Object, RoomNumber, Status, Number) values (%s, %s, %s, %s, %s)''', [id, object, room, status, num])
+        g.db.execute('''insert into Reservation (StudentID, Object, RoomNumber, Status, Number, Reason) values (%s, %s, %s, %s, %s, %s)''', [id, object, room, status, num, reason])
         #g.db.execute('''insert into ReservationMember (LeaderNumber, MemberName) values (%s, %s)''', [id, member])
 
     return redirect(url_for('finish_reservation'))
