@@ -10,16 +10,15 @@ CREATE TABLE `Master` (
   PRIMARY KEY (`Number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 CREATE TABLE `Reservation` (
-  `Number` int(11) NOT NULL,
-  `StudentID` int(11) NOT NULL,
+  `Number` int(11) NULL,
+  `StudentID` int(11) NULL,
   `Date` date  DEFAULT NULL,
-  `StartTime` time DEFAULT NULL,
-  `EndTime` time DEFAULT NULL,
-  `Status` varchar(45) NOT NULL,
+  `StartTime` varchar DEFAULT NULL,
+  `EndTime` varchar DEFAULT NULL,
+  `Status` varchar(45) NULL,
   `Object` varchar(45) DEFAULT NULL,
   `MasterReason` varchar(45) DEFAULT NULL,
-  `RoomNumber` varchar(45) NOT NULL,
-  PRIMARY KEY (`Number`)
+  `RoomNumber` varchar(45) NULL,
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `ReservationLeader` (
