@@ -244,14 +244,13 @@ def finish_reservation():
     id=session['user_id']
     reservation = query_db('''select * from Reservation where StudentID = %s''', [id], one=True)
     reservationmember = query_db('''select * from ReservationMember where LeaderNumber = %s''', [id], one=True)
-    start= reservation['StartTime']
-    end=reservation['EndTime']
+    time= reservation['Time']
     object = reservation['Object']
     member = reservationmember['MemberName']
     room=reservation['RoomNumber']
     status=reservation['Status']
 
-    return render_template('finish_reservation.html', room=room,object=object, member=member, start=start, end=end, status=status)
+    return render_template('finish_reservation.html', room=room,object=object, member=member, time=time, status=status)
 
 
 
@@ -311,14 +310,16 @@ def mem():
 def member():
     if request.method == "POST":
         room=request.cookies.get('room')
+        memory=request.cookies.get('memory')
         id=session['user_id']
         member=request.form.getlist('member_list')
         object = request.form.getlist('mymultiselect')
         reason= request.form.getlist('reason')
         #reason=request.form['Reason']
+
         status='wait'
         num='1'
-        g.db.execute('''insert into Reservation (StudentID, Object, RoomNumber, Status, Number, Reason) values (%s, %s, %s, %s, %s, %s)''', [id, object, room, status, num, reason])
+        g.db.execute('''insert into Reservation (StudentID, Object, RoomNumber, Status, Number, Reason, Time) values (%s, %s, %s, %s, %s, %s, %s)''', [id, object, room, status, num, reason, memory])
         #g.db.execute('''insert into ReservationMember (LeaderNumber, MemberName) values (%s, %s)''', [id, member])
 
     return redirect(url_for('finish_reservation'))
