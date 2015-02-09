@@ -13,13 +13,11 @@
                 $(this).append($(input));
             });
         };
-         var obj = jQuery.parseJSON( '[{"StudentID": 123456789}]');
          var number=0;
          var remember_thing=[];
          var time_reservation=[];
          var class_reservation=[];
-         table_id=obj[0].StudentID;
-         if (table_id == '123456789'){
+         if ({{g.user['StudentID']}} != '123456789'){
             $( function() {
                     $('td').click( function() {
                         var class_room=$(this).attr('id');
@@ -66,15 +64,37 @@
                     });
             });
          }
+         else{
+            $( function() {
+                    $('td').click( function() {
+                        var class_room=$(this).attr('id');
+                        var change=$(this).attr('name');
+                        var remember=$(this).index();
+                        if($(this).attr('style')){
+                            removeItem(time_reservation, change);
+                            removeItem(class_reservation,class_room);
+                            $(this).removeAttr('style');
+                        }
+                        else{
+                            $(this).css('background', 'black');
+                            remember_thing.push(remember);
+                            time_reservation.push(change);
+                            class_reservation.push(class_room);
+                        }
+                    });
+            });
+         }
     {% endif %}
     $( document ).ready(function() {
         $('#submit_button').click( function() {
+            if ({{g.user['StudentID']}} != '123456789'){
             if (remember_thing.length>=2){
                 if (remember_thing[0] != remember_thing[1]){
                     alert("하루에 한 요일만 예약가능합니다");
                     remember_thing=[];
                     return;
                 }
+            }
             }
             for (var i = 0; i<time_reservation.length; i++){
                 $("#submit_time_table").addHidden('time'+i,time_reservation[i]);

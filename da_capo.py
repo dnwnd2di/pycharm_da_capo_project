@@ -271,33 +271,31 @@ def student_member():
                 ,"18:00","19:00","20:00","21:00","22:00"];
         End_time=["10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00"
             ,"18:00","19:00","20:00","21:00","22:00","23:00"];
-        starting=[0 for i in range(2)]
-        ending=[0 for i in range(2)]
-        starting[0]= Start_time[int(request.args.get('time0', ''))]
-        ending[0]=End_time[int(request.args.get('time0', ''))]
-        if (request.args.get('time1', '') ):
-           starting[1]= Start_time[int(request.args.get('time1', ''))]
-           ending[1]=End_time[int(request.args.get('time1', ''))]
-        else:
-            starting[1]='null'
-            ending[1]='null'
+        count = 0
+        while 1:
+            if (not (request.args.get('time'+unicode(count), ''))):
+                print count
+                break
+            count=count+1
+
+        starting=[0 for i in range(count)]
+        ending=[0 for i in range(count)]
+        for i in range(count):
+            starting[i]=Start_time[int(request.args.get('time'+unicode(i), ''))]
+            ending[i]=End_time[int(request.args.get('time'+unicode(i), ''))]
+
         room1 = request.args.get('room0', '')
         room2 = request.args.get('room1', '')
         memory=''
-        for i in range(2):
-            if (starting[i] != 'null' and ending[i]!='null'):
-                memory=memory+starting[i]+'~'+ending[i]
-            memory=memory+'\n'
+        for i in range(count):
+            memory=memory+starting[i]+'~'+ending[i]
 
         resp = make_response(render_template('student_member.html', memory=memory))
         resp.set_cookie('memory', value=memory)
         return resp
         memory=request.cookies.get('memory')
 
-
-
-        #end=reservation['EndTime']
-    return render_template('student_member.html',memory=memory      )
+    return render_template('student_member.html',memory=memory)
 
 @app.route('/mem')
 def mem():
@@ -321,7 +319,7 @@ def member():
         status='wait'
         num='1'
         g.db.execute('''insert into Reservation (StudentID, Object, RoomNumber, Status, Number, Reason) values (%s, %s, %s, %s, %s, %s)''', [id, object, room, status, num, reason])
-        #g.db.execute('''insert into ReservationMember (LeaderNumber, MemberName) values (%s, %s)''', [id, member], one=False)
+        #g.db.execute('''insert into ReservationMember (LeaderNumber, MemberName) values (%s, %s)''', [id, member])
 
     return redirect(url_for('finish_reservation'))
 
@@ -347,4 +345,3 @@ def check_password():
 if __name__ == "__main__":
     app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
     app.run(debug=True)
-
